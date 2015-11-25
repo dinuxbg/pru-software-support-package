@@ -40,7 +40,11 @@
 #include "resource_table.h"
 #include "intc_map_1.h"
 
+#ifdef __GNUC__
+#include <pru/io.h>
+#else
 volatile register uint32_t __R31;
+#endif
 
 /* Host-1 Interrupt sets bit 31 in register R31 */
 #define HOST_INT			((uint32_t) 1 << 31)
