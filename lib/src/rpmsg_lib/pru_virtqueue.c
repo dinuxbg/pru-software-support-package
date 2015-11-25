@@ -41,7 +41,13 @@
  */
 #include <pru_virtqueue.h>
 
+#ifdef __GNUC__
+#include <pru/io.h>
+#endif
+
+#ifndef __GNUC__
 volatile register uint32_t __R31;
+#endif
 
 /* bit 5 is the valid strobe to generate system events with __R31 */
 #define INT_ENABLE	(1 << 5)
@@ -132,7 +138,11 @@ int16_t pru_virtqueue_kick(
 		return PRU_VIRTQUEUE_NO_KICK;
 
 	/* Generate a system event to kick the ARM */
+#ifndef __GNUC__
 	__R31 = (INT_ENABLE | (vq->to_arm_event - INT_OFFSET)); 
+#else
+	write_r31(INT_ENABLE | (vq->to_arm_event - INT_OFFSET)); 
+#endif
 
 	return PRU_VIRTQUEUE_SUCCESS;
 }

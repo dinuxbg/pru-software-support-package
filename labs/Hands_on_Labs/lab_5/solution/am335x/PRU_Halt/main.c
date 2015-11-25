@@ -34,6 +34,10 @@
 #include <stdint.h>
 #include "resource_table_empty.h"
 
+#ifdef __GNUC__
+#include <pru/io.h>
+#endif
+
 int main(void)
 {
 	__halt();

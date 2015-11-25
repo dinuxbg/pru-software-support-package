@@ -59,9 +59,14 @@ struct my_resource_table {
 	uint32_t offset[1]; /* Should match 'num' in actual definition */
 };
 
-#pragma DATA_SECTION(pru_remoteproc_ResourceTable, ".resource_table")
-#pragma RETAIN(pru_remoteproc_ResourceTable)
-struct my_resource_table pru_remoteproc_ResourceTable = {
+#if !defined(__GNUC__)
+  #pragma DATA_SECTION(pru_remoteproc_ResourceTable, ".resource_table")
+  #pragma RETAIN(pru_remoteproc_ResourceTable)
+  #define __resource_table      /* */
+#else
+  #define __resource_table __attribute__((section(".resource_table")))
+#endif
+struct my_resource_table pru_remoteproc_ResourceTable __resource_table = {
 	{
 		1,		/* we're the first version that implements this */
 		0,		/* number of entries in the table */

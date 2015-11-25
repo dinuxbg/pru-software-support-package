@@ -75,9 +75,14 @@ struct my_resource_table {
 	struct fw_rsc_custom pru_ints;
 };
 
-#pragma DATA_SECTION(resourceTable, ".resource_table")
-#pragma RETAIN(resourceTable)
-struct my_resource_table resourceTable = {
+#if !defined(__GNUC__)
+  #pragma DATA_SECTION(pru_remoteproc_ResourceTable, ".resource_table")
+  #pragma RETAIN(pru_remoteproc_ResourceTable)
+  #define __resource_table      /* */
+#else
+  #define __resource_table __attribute__((section(".resource_table")))
+#endif
+struct my_resource_table resourceTable __resource_table = {
 	{
 		1,		/* Resource table version: only version 1 is supported by the current driver */
 		2,		/* number of entries in the table */
@@ -119,17 +124,22 @@ struct my_resource_table resourceTable = {
 	},
 
 	{
-		TYPE_POSTLOAD_VENDOR, PRU_INTS_VER0 | TYPE_PRU_INTS,
+		TYPE_POSTLOAD_VENDOR,
+		{
+			PRU_INTS_VER0 | TYPE_PRU_INTS,
+		},
 		sizeof(struct fw_rsc_custom_ints),
 		{
+			{
 			0x0000,
 			/* Channel-to-host mapping, 255 for unused */
-			HOST_UNUSED, 1, HOST_UNUSED, 3, HOST_UNUSED,
-			HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED,
+			{ HOST_UNUSED, 1, HOST_UNUSED, 3, HOST_UNUSED,
+			  HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED } ,
 			/* Number of evts being mapped to channels */
 			(sizeof(pru_intc_map) / sizeof(struct ch_map)),
 			/* Pointer to the structure containing mapped events */
 			pru_intc_map,
+			},
 		},
 	},
 };
