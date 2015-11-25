@@ -78,9 +78,11 @@ struct my_resource_table {
 #pragma DATA_SECTION(resourceTable, ".resource_table")
 #pragma RETAIN(resourceTable)
 struct my_resource_table resourceTable = {
-	1,	/* Resource table version: only version 1 is supported by the current driver */
-	2,	/* number of entries in the table */
-	0, 0,	/* reserved, must be zero */
+	{
+		1,		/* Resource table version: only version 1 is supported by the current driver */
+		2,		/* number of entries in the table */
+		{ 0, 0 },	/* reserved, must be zero */
+	},
 	/* offsets to entries */
 	{
 		offsetof(struct my_resource_table, rpmsg_vdev),
