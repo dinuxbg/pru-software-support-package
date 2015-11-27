@@ -79,7 +79,7 @@ uint8_t payload[RPMSG_MESSAGE_SIZE];
 /*
  * main.c
  */
-void main(void)
+int main(void)
 {
 	struct pru_rpmsg_transport transport;
 	uint16_t src, dst, len;
