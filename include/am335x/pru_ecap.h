@@ -123,6 +123,11 @@ typedef struct {
 	};	// 0x5C
 } pruEcap;
 
+#ifdef __GNUC__
+static volatile pruEcap *__CT_ECAP = (void *)0x00030000;
+#define CT_ECAP	(*__CT_ECAP)
+#else
 volatile __far pruEcap CT_ECAP __attribute__((cregister("PRU_ECAP", near), peripheral));
+#endif
 
 #endif /* _PRU_ECAP_H_ */
