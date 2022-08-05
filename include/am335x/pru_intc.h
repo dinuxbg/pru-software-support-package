@@ -903,8 +903,7 @@ typedef struct {
 } pruIntc;
 
 #ifdef __GNUC__
-static volatile pruIntc *__CT_INTC = (void *)0x00020000;
-#define CT_INTC	(*__CT_INTC)
+#define CT_INTC	(*((volatile pruIntc *)0x00020000))
 #else
 volatile __far pruIntc CT_INTC __attribute__((cregister("PRU_INTC", far), peripheral));
 #endif
