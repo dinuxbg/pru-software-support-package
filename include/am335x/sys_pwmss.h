@@ -439,8 +439,17 @@ typedef struct {
 
 } sysPwmss;
 
+#ifdef __GNUC__
+static volatile sysPwmss *__CT_PWMSS0 = (void *)0x48300000;
+static volatile sysPwmss *__CT_PWMSS1 = (void *)0x48302000;
+static volatile sysPwmss *__CT_PWMSS2 = (void *)0x48304000;
+#define PWMSS0	(*__CT_PWMSS0)
+#define PWMSS1	(*__CT_PWMSS1)
+#define PWMSS2	(*__CT_PWMSS2)
+#else
 volatile __far sysPwmss PWMSS0 __attribute__((cregister("PWMSS0", far), peripheral));
 volatile __far sysPwmss PWMSS1 __attribute__((cregister("PWMSS1", far), peripheral));
 volatile __far sysPwmss PWMSS2 __attribute__((cregister("PWMSS2", far), peripheral));
+#endif
 
 #endif /* _SYS_PWMSS_H_ */
