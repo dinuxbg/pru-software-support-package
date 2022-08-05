@@ -504,10 +504,8 @@ typedef struct {
 } sysMcspi;
 
 #ifdef __GNUC__
-static volatile sysMcspi *__CT_MCSPI0 = (void *)0x48030000;
-static volatile sysMcspi *__CT_MCSPI1 = (void *)0x481A0000;
-#define CT_MCSPI0	(*__CT_MCSPI0)
-#define CT_MCSPI1	(*__CT_MCSPI1)
+#define CT_MCSPI0	(*((volatile sysMcspi *)0x48030000))
+#define CT_MCSPI1	(*((volatile sysMcspi *)0x481A0000))
 #else
 volatile __far sysMcspi CT_MCSPI0 __attribute__((cregister("MCSPI0", far), peripheral));
 volatile __far sysMcspi CT_MCSPI1 __attribute__((cregister("MCSPI1", far), peripheral));
