@@ -251,6 +251,11 @@ typedef struct {
 
 } pruIep;
 
+#ifdef __GNUC__
+static volatile pruIep *__CT_IEP = (void *)0x0002E000;
+#define CT_IEP	(*__CT_IEP)
+#else
 volatile __far pruIep CT_IEP __attribute__((cregister("PRU_IEP", far), peripheral));
+#endif
 
 #endif /* _PRU_IEP_H_ */

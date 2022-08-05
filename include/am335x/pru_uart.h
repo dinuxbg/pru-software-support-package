@@ -280,6 +280,11 @@ typedef struct {
 
 } pruUart;
 
+#ifdef __GNUC__
+static volatile pruUart *__CT_UART = (void *)0x00028000;
+#define CT_UART	(*__CT_UART)
+#else
 volatile __far pruUart CT_UART __attribute__((cregister("PRU_UART", near), peripheral));
+#endif
 
 #endif /* _PRU_UART_H_ */
